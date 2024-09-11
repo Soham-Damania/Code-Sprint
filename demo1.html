@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef; /* Slightly darker gray background for the page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #f4f4f4; /* More off-white background for the content */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 18px;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #555555;
+        }
+        .options {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #333333;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .button-group button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 5px; /* Space between buttons */
+        }
+        .button-group button:hover {
+            background-color: #0056b3;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .feedback {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Question 2</h1>
+        <div class="question">
+            What is your favorite color?
+        </div>
+        <form id="surveyForm">
+            <div class="options" id="optionsContainer">
+                <label><input type="radio" name="color" value="red"> Red</label>
+                <label><input type="radio" name="color" value="blue"> Blue</label>
+                <label><input type="radio" name="color" value="green"> Green</label>
+                <label><input type="radio" name="color" value="yellow"> Yellow</label>
+            </div>
+            <div class="button-group">
+                <!-- Conditionally add the button if not removed -->
+                <button type="button" id="removeButtons">50/50</button>
+                <button type="button">Button 2</button>
+                <button type="button">Button 3</button>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+            <div class="feedback hidden" id="feedbackMessage"></div>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if the button was previously removed
+            if (localStorage.getItem('buttonRemoved') === 'true') {
+                const removeButtons = document.getElementById('removeButtons');
+                if (removeButtons) {
+                    removeButtons.remove();
+                }
+            }
+        });
+
+        document.getElementById('removeButtons')?.addEventListener('click', function() {
+            // Get the options container
+            const optionsContainer = document.getElementById('optionsContainer');
+            const labels = optionsContainer.querySelectorAll('label');
+            
+            // Remove the first two labels if there are more than two
+            if (labels.length > 2) {
+                optionsContainer.removeChild(labels[0]);
+                optionsContainer.removeChild(labels[1]);
+            }
+            
+            // Mark the button as removed in local storage
+            localStorage.setItem('buttonRemoved', 'true');
+            
+            // Remove the button itself
+            this.remove();
+        });
+
+        document.getElementById('surveyForm')?.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const selectedOption = document.querySelector('input[name="color"]:checked');
+            const correctOption = 'green'; // Replace with the correct option value
+            const feedbackMessage = document.getElementById('feedbackMessage');
+
+            if (!selectedOption || selectedOption.value !== correctOption) {
+                feedbackMessage.textContent = 'Incorrect';
+                feedbackMessage.classList.remove('hidden', 'correct');
+                feedbackMessage.classList.add('incorrect');
+
+                setTimeout(() => {
+                    window.location.href = 'demo2.html'; // Replace with your target URL
+                }, 1000); // Redirect after 2 seconds
+            } else {
+                feedbackMessage.textContent = 'Correct';
+                feedbackMessage.classList.remove('hidden', 'incorrect');
+                feedbackMessage.classList.add('correct');
+                
+                setTimeout(() => {
+                    window.location.href = 'demo2.html'; // Replace with your target URL
+                }, 1000); // Redirect after 2 seconds
+            }
+        });
+    </script>
+</body>
+</html>
